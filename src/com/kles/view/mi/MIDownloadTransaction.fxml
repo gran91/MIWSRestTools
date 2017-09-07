@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.kles.view.util.*?>
+<?import javafx.geometry.*?>
+<?import org.controlsfx.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kles.view.mi.MIDownloadTransactionController">
+    <children>
+        <HBox alignment="CENTER">
+            <children>
+                <Label fx:id="title" text="Download">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <fx:include fx:id="checkListTransaction" source="/com/kles/view/util/CheckListViewManage.fxml" />
+        <HBox spacing="5.0">
+            <children>
+                <Label fx:id="lpath" text="Label" />
+                <FilePathChooser fx:id="fpath" />
+            </children>
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT" spacing="5.0">
+            <children>
+                <Button fx:id="bOK" defaultButton="true" layoutX="197.1875" layoutY="281.0" mnemonicParsing="false" onAction="#handleOK" prefWidth="110.0" text="OK" />
+                <Button fx:id="bCancel" layoutX="249.375" layoutY="281.0" mnemonicParsing="false" onAction="#handleCancel" prefWidth="110.0" text="%main.cancel" />
+            </children>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+        </HBox>
+    </children>
+</VBox>

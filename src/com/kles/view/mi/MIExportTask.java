@@ -44,18 +44,16 @@ public class MIExportTask extends Task<Boolean> {
     private int limit = 3;
 
     public MIExportTask(int id) {
-        this.id = id;
-        createRestServiceListTransaction();
-        createRestServiceCreate();
-        createRestServiceCreateFields();
-
+        this(id, null, null);
     }
 
     public MIExportTask(int id, Transaction t, IRestConnection con) {
         this.id = id;
         transaction = t;
-        restConnection = con;
-        updateMessage(con.toString() + ": " + t.getProgram());
+        setRestConnection(con);
+        if (con != null && transaction != null) {
+            updateMessage(con.toString() + ": " + t.getProgram());
+        }
         updateProgress(0, limit);
         createRestServiceListTransaction();
         createRestServiceCreate();
@@ -216,9 +214,10 @@ public class MIExportTask extends Task<Boolean> {
     @Override
     protected Boolean call() throws Exception {
         runListTransaction();
-        while (!isFinished || hasError) {
-            //System.out.println("Waiting....");
+        while (!isFinished && !hasError) {
+            System.out.println("Waiting....Finish=" + isFinished + " Error=" + hasError);
         }
+        System.out.println("Sortie=" + isFinished + " Error=" + hasError);
         return !hasError;
     }
 

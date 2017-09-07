@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -13,7 +19,7 @@
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 
-<StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kles.view.mi.MDBREADTransactionListManageController">
+<StackPane fx:id="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kles.view.mi.MDBREADTransactionListManageController">
     <children>
         <VBox alignment="CENTER" spacing="5.0">
             <children>
@@ -77,15 +83,59 @@
                                 </FontAwesomeIconView>
                             </graphic>
                         </Button>
-                        <Button fx:id="bExport" mnemonicParsing="false" onAction="#export" text="%mi.export">
-                            <graphic>
-                                <FontAwesomeIconView glyphName="SIGN_IN" size="16" />
-                            </graphic>
-                        </Button>
                     </children>
                     <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </VBox.margin>
+                </HBox>
+                <HBox fx:id="buttonBar1" alignment="CENTER" layoutX="15.0" layoutY="451.0" spacing="5.0">
+                    <children>
+                        <Button fx:id="bExport" mnemonicParsing="false" onAction="#download" text="%mi.export">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="CLOUD_DOWNLOAD" size="16" >
+                                    <fill>
+                                        <LinearGradient endX="1.0" endY="1.0">
+                                            <stops>
+                                                <Stop color="#70b4e5" offset="0" />
+                                                <Stop color="#257eba" offset="0.70" />
+                                                <Stop color="#2c85c1" offset="0.85" />
+                                            </stops>
+                                        </LinearGradient>
+                                    </fill>
+                                </FontAwesomeIconView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="bImport" layoutX="87.0" layoutY="10.0" mnemonicParsing="false" onAction="#upload" text="%mi.import">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="CLOUD_UPLOAD" size="16">
+                                    <fill>
+                                        <LinearGradient endX="1.0" endY="1.0">
+                                            <stops>
+                                                <Stop color="#70b4e5" offset="0" />
+                                                <Stop color="#257eba" offset="0.70" />
+                                                <Stop color="#2c85c1" offset="0.85" />
+                                            </stops>
+                                        </LinearGradient>
+                                    </fill>
+                                </FontAwesomeIconView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="bDelivery" layoutX="38.0" layoutY="10.0" mnemonicParsing="false" onAction="#delivery" text="%mi.delivery">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="CLOUD" size="16" >
+                                    <fill>
+                                        <LinearGradient endX="1.0" endY="1.0">
+                                            <stops>
+                                                <Stop color="#70b4e5" offset="0" />
+                                                <Stop color="#257eba" offset="0.70" />
+                                                <Stop color="#2c85c1" offset="0.85" />
+                                            </stops>
+                                        </LinearGradient>
+                                    </fill>
+                                </FontAwesomeIconView>
+                            </graphic>
+                        </Button>
+                    </children>
                 </HBox>
             </children>
         </VBox>

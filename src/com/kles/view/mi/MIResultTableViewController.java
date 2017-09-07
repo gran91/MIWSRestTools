@@ -134,35 +134,6 @@ public class MIResultTableViewController {
         return null;
     }
 
-    private Node buildOutputPanel() {
-        ScrollPane scroll = new ScrollPane();
-        scroll.setPrefSize(350, 595);
-        GridPane g = new GridPane();
-        g.setHgap(5d);
-        g.setVgap(5d);
-        g.setPadding(new Insets(5d));
-        MIRecord oData = (MIRecord) table.getSelectionModel().getSelectedItem();
-        int row = 0;
-        if (oData != null) {
-            for (FieldMetadata f : midata.getResult().getMetadata().getField()) {
-                final Label l = new Label(f.getName());
-                l.setFont(Font.font(null, FontWeight.BOLD, 15));
-                l.setTooltip(new Tooltip(f.getDescription()));
-                final TextField t = new TextField();
-                t.setEditable(false);
-                if (oData.getNameValue().get(row) != null) {
-                    t.setText(oData.getNameValue().get(row).getValue());
-                }
-                t.setTooltip(new Tooltip(f.getDescription()));
-                g.add(l, 0, row);
-                g.add(t, 1, row);
-                row++;
-            }
-        }
-        scroll.setContent(g);
-        return scroll;
-    }
-
     @FXML
     public void csv() {
         FileChooser f = new FileChooser();

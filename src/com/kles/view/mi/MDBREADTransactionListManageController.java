@@ -75,7 +75,7 @@ public class MDBREADTransactionListManageController {
     private PanelIndicator progressListTransaction;
 
     @FXML
-    private Button bNew, bRemoveTransaction, bEditTransaction, bExport, bCreateGet, bCreateLst, bCreateSel;
+    private Button bNew, bRemoveTransaction, bEditTransaction, bExport, bImport, bDelivery, bCreateGet, bCreateLst, bCreateSel;
 
     @FXML
     private HBox searchBar, buttonBar;
@@ -135,6 +135,8 @@ public class MDBREADTransactionListManageController {
         bEditTransaction.disableProperty().bind(transactionList.getSelectionModel().selectedItemProperty().isNull().or(restServiceListTransaction.runningProperty()));
         bRemoveTransaction.disableProperty().bind(transactionList.getSelectionModel().selectedItemProperty().isNull().or(restServiceListTransaction.runningProperty()));
         bExport.disableProperty().bind(transactionList.getSelectionModel().selectedItemProperty().isNull().or(restServiceListTransaction.runningProperty()));
+        bImport.disableProperty().bind(transactionList.getSelectionModel().selectedItemProperty().isNull().or(restServiceListTransaction.runningProperty()));
+        bDelivery.disableProperty().bind(transactionList.getSelectionModel().selectedItemProperty().isNull().or(restServiceListTransaction.runningProperty()));
         tfiltertransaction.disableProperty().bind(Bindings.isEmpty(listTransaction));
     }
 
@@ -304,7 +306,7 @@ public class MDBREADTransactionListManageController {
     }
 
     @FXML
-    private void export(ActionEvent event) {
+    private void delivery(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(mainApp.getResourceBundle());
@@ -329,6 +331,37 @@ public class MDBREADTransactionListManageController {
         } catch (IOException ex) {
             Logger.getLogger(MDBREADTransactionListManageController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @FXML
+    private void download(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setResources(mainApp.getResourceBundle());
+            loader.setLocation(MDBREADTransactionListManageController.class.getResource("/com/kles/view/mi/MIDownloadTransaction.fxml"));
+            Pane miRestTest = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Export");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(stage);
+            dialogStage.getIcons().add(Resource.LOGO_ICON_32);
+
+            MIDownloadTransactionController controller = loader.getController();
+            controller.setMainApp(mainApp);
+            controller.setStage(dialogStage);
+            controller.setTransactionList(transactionList.getSelectionModel().getSelectedItems());
+            Scene scene = new Scene(miRestTest, Color.TRANSPARENT);
+            scene.getStylesheets().add(MainApp.class.getResource("application.css").toExternalForm());
+            dialogStage.setScene(scene);
+            dialogStage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(MDBREADTransactionListManageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void upload(ActionEvent event) {
     }
 
     public void runListTransaction() {

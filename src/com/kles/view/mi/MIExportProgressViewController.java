@@ -58,6 +58,7 @@ public class MIExportProgressViewController {
     public void run() {
         taskProgressView.getTasks().forEach((t) -> {
             t.stateProperty().addListener((ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) -> {
+                System.out.println("TaskProgressView change status to "+newValue.name());
                 switch (newValue) {
                     case FAILED:
                         listError.add(t.getId());

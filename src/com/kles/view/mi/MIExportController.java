@@ -12,7 +12,6 @@ import com.kles.view.util.CheckListViewManageController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -91,20 +90,14 @@ public class MIExportController {
     private List<MIExportTask> buildTaskList() {
         cpt = 0;
         List<MIExportTask> list = new ArrayList<>();
-        checkListEnvController.getList().getCheckModel().getCheckedItems().forEach(new Consumer<MIWS>() {
-            @Override
-            public void accept(MIWS miws) {
-                checkListTransactionController.getList().getCheckModel().getCheckedItems().forEach(new Consumer<Transaction>() {
-                    @Override
-                    public void accept(Transaction t) {
-                        final MIExportTask task = new MIExportTask(cpt);
-                        task.setRestConnection(miws);
-                        task.setTransaction(t);
-                        list.add(task);
-                        cpt++;
-                    }
-                });
-            }
+        checkListEnvController.getList().getCheckModel().getCheckedItems().forEach((MIWS miws) -> {
+            checkListTransactionController.getList().getCheckModel().getCheckedItems().forEach((Transaction t) -> {
+                final MIExportTask task = new MIExportTask(cpt,t,miws);
+//                        task.setRestConnection(miws);
+//                        task.setTransaction(t);
+                list.add(task);
+                cpt++;
+            });
         });
 
         return list;
