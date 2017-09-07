@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kles.view.mi.MDBREADEditController">
+    <center>
+        <VBox spacing="5.0">
+            <children>
+                <fx:include fx:id="mdbreadListManage" source="MDBREADListManage.fxml" />
+                <Separator/>
+                <HBox alignment="CENTER" spacing="5.0" GridPane.columnSpan="3" GridPane.rowIndex="4">
+                    <children>
+                        <Button fx:id="bUpdate" mnemonicParsing="false" onAction="#update" text="%mi.update" />
+                        <Button fx:id="bCreate1" mnemonicParsing="false" onAction="#create1" text="CreateList" />
+                        <Button fx:id="bCreate2" mnemonicParsing="false" onAction="#create2" text="CreateSel" />
+                        <ProgressIndicator fx:id="progress" prefHeight="19.0" prefWidth="46.0" />
+                        <Label fx:id="lmessage" />
+                    </children>
+                </HBox>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </BorderPane.margin>
+        </VBox>
+    </center>
+    <top>
+        <VBox alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="ltransactionName" alignment="CENTER" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </BorderPane.margin>
+        </VBox>
+    </top>
+</BorderPane>

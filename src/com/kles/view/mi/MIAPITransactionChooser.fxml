@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kles.view.mi.MIAPITransactionChooserController">
+    <children>
+        <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="ALWAYS" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" prefWidth="50.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="%mi.api" />
+                <ComboBox fx:id="comboAPI" prefWidth="150.0" GridPane.columnIndex="1" />
+                <Label text="%mi.transaction" GridPane.rowIndex="2" />
+                <ComboBox fx:id="comboTrans" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label fx:id="lAPIName" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lTransactionName" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Label>
+                <ProgressIndicator fx:id="progressAPI" GridPane.columnIndex="2" />
+                <ProgressIndicator fx:id="progressTransaction" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Label text="%mi.maxrecord" GridPane.rowIndex="4" />
+                <TextField fx:id="tmaxrec" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            </children>
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+        </GridPane>
+    </children>
+</VBox>

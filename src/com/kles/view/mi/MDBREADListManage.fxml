@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="root" hgap="5.0" vgap="5.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kles.view.mi.MDBREADListManageController">
+    <columnConstraints>
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="33.3" />
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="33.34" />
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="33.3" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
+        <RowConstraints vgrow="SOMETIMES" />
+        <RowConstraints vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <Label fx:id="linputindex" text="%mi.inputindex">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Label>
+        <Label fx:id="ltablefield" text="%mi.tablefield" GridPane.columnIndex="1">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Label>
+        <ListView fx:id="lInputTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.rowIndex="1" />
+        <ListView fx:id="lOutputTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <HBox alignment="CENTER" spacing="5.0" GridPane.rowIndex="2">
+            <children>
+                <Button fx:id="bRestoreField" mnemonicParsing="false" onAction="#restoreField" text="%mi.restore">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="REFRESH" size="16">
+                            <fill>
+                                <LinearGradient endX="1.0" endY="1.0">
+                                    <stops>
+                                        <Stop color="#70b4e5" offset="0" />
+                                        <Stop color="#257eba" offset="0.70" />
+                                        <Stop color="#2c85c1" offset="0.85" />
+                                    </stops>
+                                </LinearGradient>
+                            </fill>
+                        </FontAwesomeIconView>
+                    </graphic>
+                </Button>
+                <Button fx:id="bRemoveLastField" mnemonicParsing="false" onAction="#removeLastField" text="%mi.removelast">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="TRASH" size="16">
+                            <fill>
+                                <LinearGradient endX="1.0" endY="1.0">
+                                    <stops>
+                                        <Stop color="#990000" offset="0" />
+                                        <Stop color="#DD0000" offset="0.70" />
+                                        <Stop color="#FF0000" offset="0.85" />
+                                    </stops>
+                                </LinearGradient>
+                            </fill>
+                        </FontAwesomeIconView>
+                    </graphic>
+                </Button>
+                <Button fx:id="bSearchQuery" mnemonicParsing="false" onAction="#searchQuery" text="SearchQuery">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="SEARCH" size="16">
+                            <fill>
+                                <LinearGradient endX="1.0" endY="1.0">
+                                    <stops>
+                                        <Stop color="#70b4e5" offset="0" />
+                                        <Stop color="#257eba" offset="0.70" />
+                                        <Stop color="#2c85c1" offset="0.85" />
+                                    </stops>
+                                </LinearGradient>
+                            </fill>
+                        </FontAwesomeIconView>
+                    </graphic>
+                </Button>
+            </children>
+            <GridPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </GridPane.margin>
+        </HBox>
+        <HBox fx:id="searchBar" alignment="CENTER" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <children>
+                <FontAwesomeIconView glyphName="SEARCH" size="16">
+                    <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                            <stops>
+                                <Stop color="#70b4e5" offset="0" />
+                                <Stop color="#257eba" offset="0.70" />
+                                <Stop color="#2c85c1" offset="0.85" />
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </FontAwesomeIconView>
+                <TextField fx:id="tfiltertable" HBox.hgrow="ALWAYS" />
+                <Button fx:id="bAdd" mnemonicParsing="false" onAction="#addField">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="PLUS" size="16">
+                            <fill>
+                                <LinearGradient endX="1.0" endY="1.0">
+                                    <stops>
+                                        <Stop color="#00FF00" offset="0" />
+                                        <Stop color="#00A900" offset="0.70" />
+                                        <Stop color="#008600" offset="0.85" />
+                                    </stops>
+                                </LinearGradient>
+                            </fill>
+                        </FontAwesomeIconView>
+                    </graphic>
+                </Button>
+            </children>
+            <GridPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </GridPane.margin>
+        </HBox>
+        <Label fx:id="loutputfield" text="%mi.outputfield" GridPane.columnIndex="2">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Label>
+        <ListView fx:id="lOutputMI" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <HBox alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <children>
+                <Button fx:id="bRemove" mnemonicParsing="false" onAction="#removeField" text="%mi.remove">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="TRASH" size="16">
+                            <fill>
+                                <LinearGradient endX="1.0" endY="1.0">
+                                    <stops>
+                                        <Stop color="#990000" offset="0" />
+                                        <Stop color="#DD0000" offset="0.70" />
+                                        <Stop color="#FF0000" offset="0.85" />
+                                    </stops>
+                                </LinearGradient>
+                            </fill>
+                        </FontAwesomeIconView>
+                    </graphic>
+                </Button>
+            </children>
+        </HBox>
+    </children>
+</GridPane>

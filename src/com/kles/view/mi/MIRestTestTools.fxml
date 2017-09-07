@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kles.view.mi.MIRestTestToolsController">
+    <top>
+        <HBox fx:id="header" alignment="CENTER_LEFT" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <ListView fx:id="listSaveInput" prefHeight="200.0" prefWidth="350.0">
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </HBox.margin>
+                </ListView>
+                <fx:include fx:id="miConnection" source="MIConnection.fxml" />
+                <fx:include fx:id="miAPITransaction" source="MIAPITransactionChooser.fxml" />
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <fx:include fx:id="miRestTest" source="MIRestTest.fxml" />
+    </center>
+</BorderPane>

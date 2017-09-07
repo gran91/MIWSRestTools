@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+
+<StackPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kles.view.mi.MDBREADTransactionListManageController">
+    <children>
+        <VBox alignment="CENTER" spacing="5.0">
+            <children>
+                <ListView fx:id="transactionList" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#editTransaction" text="%mi.edit" />
+                                <MenuItem mnemonicParsing="false" onAction="#removeTransaction" text="%mi.delete" />
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </ListView>
+                <HBox fx:id="searchBar" alignment="CENTER_LEFT" spacing="5.0">
+                    <children>
+                        <FontAwesomeIconView glyphName="SEARCH" size="16">
+                            <fill>
+                                <LinearGradient endX="1.0" endY="1.0">
+                                    <stops>
+                                        <Stop color="#70b4e5" offset="0" />
+                                        <Stop color="#257eba" offset="0.70" />
+                                        <Stop color="#2c85c1" offset="0.85" />
+                                    </stops>
+                                </LinearGradient>
+                            </fill>
+                        </FontAwesomeIconView>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </VBox.margin>
+                </HBox>
+                <HBox fx:id="buttonBar" alignment="CENTER" spacing="5.0">
+                    <children>
+                        <Button fx:id="bRemoveTransaction" mnemonicParsing="false" onAction="#removeTransaction" text="%mi.remove">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="TRASH" size="16">
+                                    <fill>
+                                        <LinearGradient endX="1.0" endY="1.0">
+                                            <stops>
+                                                <Stop color="#990000" offset="0" />
+                                                <Stop color="#DD0000" offset="0.70" />
+                                                <Stop color="#FF0000" offset="0.85" />
+                                            </stops>
+                                        </LinearGradient>
+                                    </fill>
+                                </FontAwesomeIconView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="bEditTransaction" mnemonicParsing="false" onAction="#editTransaction" text="%mi.edit">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="EDIT" size="16">
+                                    <fill>
+                                        <LinearGradient endX="1.0" endY="1.0">
+                                            <stops>
+                                                <Stop color="#70b4e5" offset="0" />
+                                                <Stop color="#257eba" offset="0.70" />
+                                                <Stop color="#2c85c1" offset="0.85" />
+                                            </stops>
+                                        </LinearGradient>
+                                    </fill>
+                                </FontAwesomeIconView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="bExport" mnemonicParsing="false" onAction="#export" text="%mi.export">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="SIGN_IN" size="16" />
+                            </graphic>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</StackPane>
