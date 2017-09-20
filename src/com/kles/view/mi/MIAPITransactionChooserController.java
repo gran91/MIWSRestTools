@@ -5,6 +5,7 @@
  */
 package com.kles.view.mi;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.kles.MainApp;
@@ -138,20 +139,19 @@ public class MIAPITransactionChooserController {
         }
         );
 
-        comboTrans.valueProperty()
-                .addListener(new ChangeListener<Transaction>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Transaction> observable, Transaction oldValue,
-                            Transaction newValue
-                    ) {
-                        if (newValue != null) {
-                            lTransactionName.setText(newValue.getDescription());
-                        } else {
-                            lTransactionName.setText("");
-                        }
-                    }
+        comboTrans.valueProperty().addListener(new ChangeListener<Transaction>() {
+            @Override
+            public void changed(ObservableValue<? extends Transaction> observable, Transaction oldValue,
+                    Transaction newValue
+            ) {
+                if (newValue != null) {
+                    lTransactionName.setText(newValue.getDescription());
+                } else {
+                    lTransactionName.setText("");
                 }
-                );
+            }
+        }
+        );
     }
 
     private void createRestServiceProvider() {
@@ -179,6 +179,7 @@ public class MIAPITransactionChooserController {
                 case SUCCEEDED:
                     if (!restTask.getValue().isEmpty()) {
                         ObjectMapper mapper = new XmlMapper();
+                        mapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
                         try {
                             miprogram = mapper.readValue(restTask.getValue(), MIProgramMetadata.class);
                             List<Transaction> listTrans = miprogram.getTransactions();

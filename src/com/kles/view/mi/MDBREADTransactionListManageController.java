@@ -5,6 +5,7 @@
  */
 package com.kles.view.mi;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.kles.MainApp;
@@ -190,6 +191,7 @@ public class MDBREADTransactionListManageController {
                 case SUCCEEDED:
                     if (!restTask.getValue().isEmpty()) {
                         ObjectMapper mapper = new XmlMapper();
+                        mapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
                         try {
                             miprogram = mapper.readValue(restTask.getValue(), MIProgramMetadata.class);
                             listTransaction.setAll(MIUtils.purify(miprogram.getTransactions()));

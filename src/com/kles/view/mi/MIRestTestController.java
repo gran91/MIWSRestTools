@@ -202,6 +202,7 @@ public class MIRestTestController {
             Pane node = (Pane) loader.load();
             MIResultTableViewController controller = loader.getController();
             controller.setMainApp(mainApp);
+            controller.setStage(stage);
             controller.setMIData(resultInput);
             controller.buildTable();
 //            tab.setContent(node);

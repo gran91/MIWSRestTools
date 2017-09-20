@@ -48,7 +48,16 @@ public class MIUtils {
         "GetInLayout",
         "GetOutLayout",
         "GetMIBuild",
-        "GetServerTime"};
+        "GetServerTime",
+        "GetFieldHeading",
+        "SetDateFormat",
+        "SetLstMaxRec",
+        "GetUserInfo",
+        "GetM3Name",
+        "StartProfiler",
+        "StopProfiler",
+        "ServerTimeZone"
+    };
 
     public static List<Transaction> purify(List<Transaction> list) {
         List techList = Arrays.asList(technicalTransaction);

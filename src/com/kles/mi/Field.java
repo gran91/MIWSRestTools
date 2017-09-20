@@ -85,7 +85,13 @@ public class Field {
         m.addData("FLDS", Description);
         m.addData("FRPO", "" + frpo);
         m.addData("LENG", "" + Length);
-        m.addData("TYPE", "" + FieldType);
+        if (FieldType.equals("Integer")) {
+            m.addData("TYPE", "N");
+        } else if (FieldType.equals("Alpha")) {
+            m.addData("TYPE", "A");
+        } else {
+            m.addData("TYPE", "" + FieldType);
+        }
         m.addData("MAND", BooleanUtils.toInteger(Mandatory) + "");
         return m;
     }

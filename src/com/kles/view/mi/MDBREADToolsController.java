@@ -81,7 +81,8 @@ public class MDBREADToolsController {
         tableBoolean = TextFieldValidator.emptyTextFieldBinding(ttable, "Table", messages);
         indexBoolean = TextFieldValidator.emptyTextFieldBinding(tindex, "Index table", messages);
         InputConstraints.lettersOnly(ttable, 6);
-        InputConstraints.numbersOnly(tindex, 2);
+        InputConstraints.noBlanks(tindex);
+        InputConstraints.maxLength(tindex, 2);
 
 //        mdbreadListManageController.getTableName().bind(ttable.textProperty());
 //        mdbreadListManageController.getTableIndex().bind(tindex.textProperty());

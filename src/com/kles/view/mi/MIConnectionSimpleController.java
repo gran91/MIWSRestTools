@@ -5,6 +5,7 @@
  */
 package com.kles.view.mi;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.kles.MainApp;
@@ -130,6 +131,7 @@ public class MIConnectionSimpleController {
                 case SUCCEEDED:
                     if (!restTask.getValue().isEmpty()) {
                         ObjectMapper mapper = new XmlMapper();
+                        mapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
                         try {
                             miprograms = mapper.readValue(restTask.getValue(), MIPrograms.class);
                             isConnected.set(true);

@@ -5,6 +5,7 @@
  */
 package com.kles.view.mi;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.kles.mi.MIProgramMetadata;
@@ -85,6 +86,7 @@ public class MIExportTask extends Task<Boolean> {
                 case SUCCEEDED:
                     if (!restTaskListTransaction.getValue().isEmpty()) {
                         ObjectMapper mapper = new XmlMapper();
+                        mapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
                         try {
                             MIProgramMetadata miprogram = mapper.readValue(restTaskListTransaction.getValue(), MIProgramMetadata.class);
                             listTransaction.addAll(MIUtils.purify(miprogram.getTransactions()));

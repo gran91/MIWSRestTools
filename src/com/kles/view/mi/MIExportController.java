@@ -22,7 +22,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -59,6 +62,12 @@ public class MIExportController {
 
     @FXML
     public void initialize() {
+        HBox.setHgrow(checkListTransactionController.getRoot(), Priority.ALWAYS);
+        VBox.setVgrow(checkListTransactionController.getList(), Priority.ALWAYS);
+        checkListTransactionController.getList().setPrefHeight(200);
+        HBox.setHgrow(checkListEnvController.getRoot(), Priority.ALWAYS);
+        VBox.setVgrow(checkListEnvController.getList(), Priority.ALWAYS);
+        checkListEnvController.getList().setPrefHeight(200);
         bOK.disableProperty().bind(checkListTransactionController.getIsLeastOne().and(checkListEnvController.getIsLeastOne()).not());
     }
 
@@ -92,7 +101,7 @@ public class MIExportController {
         List<MIExportTask> list = new ArrayList<>();
         checkListEnvController.getList().getCheckModel().getCheckedItems().forEach((MIWS miws) -> {
             checkListTransactionController.getList().getCheckModel().getCheckedItems().forEach((Transaction t) -> {
-                final MIExportTask task = new MIExportTask(cpt,t,miws);
+                final MIExportTask task = new MIExportTask(cpt, t, miws);
 //                        task.setRestConnection(miws);
 //                        task.setTransaction(t);
                 list.add(task);

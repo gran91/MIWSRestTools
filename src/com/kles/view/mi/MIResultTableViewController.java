@@ -6,13 +6,16 @@
 package com.kles.view.mi;
 
 import com.kles.MainApp;
+import com.kles.fx.custom.FxUtil;
 import com.kles.mi.FieldMetadata;
 import com.kles.mi.MIRecord;
 import com.kles.mi.MIResultInput;
+import com.kles.notification.Notification;
 import com.kles.output.AbstractOutput;
 import com.kles.output.CSVTableView;
 import com.kles.output.xls.ExcelTableView;
 import com.kles.utils.MIUtils;
+import com.kles.view.util.ProgressDialogController;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -21,24 +24,23 @@ import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 
@@ -63,6 +65,7 @@ public class MIResultTableViewController {
     private PopOver popOver;
     private Node popNodeParent;
     private MainApp mainApp;
+    private Stage stage;
 
     @FXML
     public void initialize() {
@@ -142,6 +145,9 @@ public class MIResultTableViewController {
         f.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("CSV", new String[]{".csv"}));
         File file = f.showSaveDialog(this.getRoot().getScene().getWindow());
         if (file != null) {
+            ProgressDialogController c = FxUtil.showProgressDialog(stage);
+            c.show();
+            c.getLabel().setText("Génération du fichier " + file.getAbsolutePath() + " en cours...");
             CSVTableView csv = new CSVTableView();
             csv.setFile(file);
             csv.setTableView(table);
@@ -152,7 +158,27 @@ public class MIResultTableViewController {
             csv.setHeader(tabHeader);
             csv.setData(MIUtils.tableDataMIToListString(table));
             csv.setAction(AbstractOutput.WRITE);
-            csv.run();
+            Service<Void> s = new Service<Void>() {
+                @Override
+                protected Task<Void> createTask() {
+                    return csv;
+                }
+            };
+            s.stateProperty().addListener((ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) -> {
+                switch (newValue) {
+                    case FAILED:
+                        break;
+                    case RUNNING:
+                        break;
+                    case SUCCEEDED:
+                        Notification.Notifier.INSTANCE.notifySuccess("CSV", "Fichier "+file.getAbsolutePath()+" généré avec succès.");
+                        break;
+
+                }
+            });
+            c.getPane().visibleProperty().bind(s.runningProperty());
+            s.restart();
+
         }
     }
 
@@ -178,6 +204,10 @@ public class MIResultTableViewController {
 
     public void setMainApp(MainApp main) {
         mainApp = main;
+    }
+
+    public void setStage(Stage s) {
+        stage = s;
     }
 
     public VBox getRoot() {
