@@ -94,8 +94,9 @@ public class MIConnectionSimpleController {
     }
 
     protected void addBinding() {
-        bconnect.disableProperty().bind(restService.runningProperty());
+        bconnect.disableProperty().bind(restService.runningProperty().or(comboEnv.getListModel().getSelectionModel().selectedIndexProperty().lessThan(0)));
         progressConnect.visibleProperty().bind(restService.runningProperty());
+        message.visibleProperty().bind(isConnected.not());
         message.textProperty().bind(restService.messageProperty());
         message.textFillProperty().bind(Bindings.when(restService.stateProperty().isEqualTo(Worker.State.FAILED))
                 .then(Color.RED).otherwise(Color.BLACK));
@@ -119,7 +120,7 @@ public class MIConnectionSimpleController {
         restService.stateProperty().addListener((ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) -> {
             switch (newValue) {
                 case FAILED:
-                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTask.getMessage());
+                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTask.getMessage(), (Exception) restTask.getException());
                     isConnected.set(false);
                     break;
                 case CANCELLED:

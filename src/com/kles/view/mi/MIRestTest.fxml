@@ -31,12 +31,13 @@
                     <children>
                         <Button fx:id="bClean" mnemonicParsing="false" onAction="#clean" text="%mi.clean">
                             <graphic>
-                                <FontAwesomeIconView glyphName="TRASH" size="20">
+                                <FontAwesomeIconView glyphName="TRASH" size="16">
                                     <fill>
                                         <LinearGradient endX="1.0" endY="1.0">
                                             <stops>
-                                                <Stop color="RED" />
-                                                <Stop color="#fa9393" offset="1.0" />
+                                                <Stop color="#990000" offset="0" />
+                                                <Stop color="#DD0000" offset="0.70" />
+                                                <Stop color="#FF0000" offset="0.85" />
                                             </stops>
                                         </LinearGradient>
                                     </fill>
@@ -74,7 +75,17 @@
                     <children>
                         <Button fx:id="bCloseAll" mnemonicParsing="false" onAction="#closeAll">
                             <graphic>
-                                <FontAwesomeIconView glyphName="TRASH" size="20" />
+                                <FontAwesomeIconView glyphName="TRASH" size="16">
+                                    <fill>
+                                        <LinearGradient endX="1.0" endY="1.0">
+                                            <stops>
+                                                <Stop color="#990000" offset="0" />
+                                                <Stop color="#DD0000" offset="0.70" />
+                                                <Stop color="#FF0000" offset="0.85" />
+                                            </stops>
+                                        </LinearGradient>
+                                    </fill>
+                                </FontAwesomeIconView>
                             </graphic>
                         </Button>
                     </children>

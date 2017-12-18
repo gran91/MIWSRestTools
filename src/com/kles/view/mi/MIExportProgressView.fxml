@@ -7,28 +7,29 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.TaskProgressView?>
+<?import com.kles.view.util.ListTaskProgressView?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kles.view.mi.MIExportProgressViewController">
-   <children>
-      <TaskProgressView fx:id="taskProgressView" />
-      <GridPane>
-        <columnConstraints>
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Label text="Error" />
-            <Label text="Success" GridPane.columnIndex="1" />
-            <Label text="Total" GridPane.columnIndex="2" />
-            <ProgressIndicator fx:id="progressError" progress="0.0" GridPane.rowIndex="1" />
-            <ProgressIndicator fx:id="progressSuccess" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ProgressIndicator fx:id="progressTotal" progress="0.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-         </children>
-      </GridPane>
-   </children>
+    <children>
+        <ListTaskProgressView fx:id="taskProgressView" VBox.vgrow="ALWAYS" />
+        <GridPane VBox.vgrow="NEVER">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="70.0" minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="%mi.export.error" />
+                <Label text="%mi.export.success" GridPane.columnIndex="1" />
+                <Label text="%mi.export.total" GridPane.columnIndex="2" />
+                <ProgressIndicator fx:id="progressError" progress="0.0" GridPane.rowIndex="1" />
+                <ProgressIndicator fx:id="progressSuccess" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <ProgressIndicator fx:id="progressTotal" progress="0.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            </children>
+        </GridPane>
+    </children>
 </VBox>

@@ -44,6 +44,18 @@ public class MIConnectionController extends MIConnectionSimpleController {
             tlogin.setText(((MIWS) newValue).getLogin());
             tpassword.setText(((MIWS) newValue).getPassword());
         });
+        thost.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            isConnected.set(false);
+        });
+        tport.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            isConnected.set(false);
+        });
+        tlogin.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            isConnected.set(false);
+        });
+        tpassword.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            isConnected.set(false);
+        });
     }
 
     @FXML

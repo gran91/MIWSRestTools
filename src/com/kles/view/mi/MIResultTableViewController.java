@@ -141,13 +141,13 @@ public class MIResultTableViewController {
     public void csv() {
         FileChooser f = new FileChooser();
         f.setTitle("CSV");
-        f.setInitialFileName(midata.getResult().getTransaction() + ".csv");
+        f.setInitialFileName(midata.getResult().getProgram() + "_" + midata.getResult().getTransaction() + ".csv");
         f.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("CSV", new String[]{".csv"}));
         File file = f.showSaveDialog(this.getRoot().getScene().getWindow());
         if (file != null) {
             ProgressDialogController c = FxUtil.showProgressDialog(stage);
             c.show();
-            c.getLabel().setText("Génération du fichier " + file.getAbsolutePath() + " en cours...");
+            c.getLabel().setText(String.format(mainApp.getResourceBundle().getString("mi.file.generating"), file.getAbsolutePath()));
             CSVTableView csv = new CSVTableView();
             csv.setFile(file);
             csv.setTableView(table);
@@ -167,11 +167,12 @@ public class MIResultTableViewController {
             s.stateProperty().addListener((ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) -> {
                 switch (newValue) {
                     case FAILED:
+                        Notification.Notifier.INSTANCE.notifyError("CSV", String.format(mainApp.getResourceBundle().getString("mi.file.generate.error"), file.getAbsolutePath()));
                         break;
                     case RUNNING:
                         break;
                     case SUCCEEDED:
-                        Notification.Notifier.INSTANCE.notifySuccess("CSV", "Fichier "+file.getAbsolutePath()+" généré avec succès.");
+                        Notification.Notifier.INSTANCE.notifySuccess("CSV", String.format(mainApp.getResourceBundle().getString("mi.file.generate.success"), file.getAbsolutePath()));
                         break;
 
                 }
@@ -186,14 +187,37 @@ public class MIResultTableViewController {
     public void excel() {
         FileChooser f = new FileChooser();
         f.setTitle("Excel");
-        f.setInitialFileName(midata.getResult().getTransaction() + ".xls");
+        f.setInitialFileName(midata.getResult().getProgram() + "_" + midata.getResult().getTransaction() + ".xls");
         f.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Excel", new String[]{".xls"}));
         File file = f.showSaveDialog(this.getRoot().getScene().getWindow());
         if (file != null) {
+            ProgressDialogController c = FxUtil.showProgressDialog(stage);
+            c.show();
+            c.getLabel().setText(String.format(mainApp.getResourceBundle().getString("mi.file.generating"), file.getAbsolutePath()));
             ExcelTableView xls = new ExcelTableView(table);
             xls.setFilePath(file.getAbsolutePath());
             xls.setAction(AbstractOutput.WRITE);
-            xls.run();
+            Service<Void> s = new Service<Void>() {
+                @Override
+                protected Task<Void> createTask() {
+                    return xls;
+                }
+            };
+            s.stateProperty().addListener((ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) -> {
+                switch (newValue) {
+                    case FAILED:
+                        Notification.Notifier.INSTANCE.notifyError("EXCEL", String.format(mainApp.getResourceBundle().getString("mi.file.generate.error"), file.getAbsolutePath()));
+                        break;
+                    case RUNNING:
+                        break;
+                    case SUCCEEDED:
+                        Notification.Notifier.INSTANCE.notifySuccess("EXCEL", String.format(mainApp.getResourceBundle().getString("mi.file.generate.success"), file.getAbsolutePath()));
+                        break;
+
+                }
+            });
+            c.getPane().visibleProperty().bind(s.runningProperty());
+            s.restart();
         }
     }
 

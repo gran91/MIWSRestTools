@@ -38,6 +38,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -111,47 +112,52 @@ public class MIAPITransactionChooserController {
         progressTransaction.visibleProperty()
                 .bind(restService.runningProperty());
 
-        comboAPI.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue != null) {
-                    comboTrans.getSelectionModel().select(null);
-                    if (!newValue.isEmpty() && restConnection != null) {
-                        restClient.setEnvironment(restConnection);
-                        restClient.setAction(DefaultRestClientMetadataConnection.LIST_TRANS);
-                        GenericDataMIModel m = new GenericDataMIModel();
-                        m.setMIProgram(newValue);
-                        restClient.setDataModel(m);
-                        restTask = new RestGetTask(restClient);
-                        restTask.setMediaType(MediaType.APPLICATION_XML);
-                        restService.restart();
-                    } else {
-                        lAPIName.setText("");
-                        listTransaction.clear();
-                        isTransDisable.set(true);
-                    }
+        comboAPI.valueProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if (newValue != null) {
+                comboTrans.getSelectionModel().select(null);
+                if (!newValue.isEmpty() && restConnection != null) {
+                    restClient.setEnvironment(restConnection);
+                    restClient.setAction(DefaultRestClientMetadataConnection.LIST_TRANS);
+                    GenericDataMIModel m = new GenericDataMIModel();
+                    m.setMIProgram(newValue);
+                    restClient.setDataModel(m);
+                    restTask = new RestGetTask(restClient);
+                    restTask.setMediaType(MediaType.APPLICATION_XML);
+                    restService.restart();
                 } else {
                     lAPIName.setText("");
                     listTransaction.clear();
                     isTransDisable.set(true);
                 }
+            } else {
+                lAPIName.setText("");
+                listTransaction.clear();
+                isTransDisable.set(true);
             }
-        }
-        );
+        });
 
-        comboTrans.valueProperty().addListener(new ChangeListener<Transaction>() {
+        comboTrans.setConverter(new StringConverter<Transaction>() {
             @Override
-            public void changed(ObservableValue<? extends Transaction> observable, Transaction oldValue,
-                    Transaction newValue
-            ) {
-                if (newValue != null) {
-                    lTransactionName.setText(newValue.getDescription());
-                } else {
-                    lTransactionName.setText("");
+            public String toString(Transaction object) {
+                if (object == null) {
+                    return "";
                 }
+                return object.getTransaction();
             }
-        }
-        );
+
+            @Override
+            public Transaction fromString(String string) {
+                return comboTrans.getSelectionModel().getSelectedItem();
+            }
+        });
+
+        comboTrans.valueProperty().addListener((ObservableValue<? extends Transaction> observable, Transaction oldValue, Transaction newValue) -> {
+            if (newValue != null) {
+                lTransactionName.setText(newValue.getDescription());
+            } else {
+                lTransactionName.setText("");
+            }
+        });
     }
 
     private void createRestServiceProvider() {

@@ -5,6 +5,7 @@
  */
 package com.kles.view.mi;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kles.MainApp;
 import com.kles.fx.custom.FxUtil;
@@ -144,6 +145,7 @@ public class MIRestTestController {
                     isTabPaneDisable.setValue(false);
                     if (!restTask.getValue().isEmpty()) {
                         ObjectMapper mapper = new ObjectMapper();
+                        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
                         try {
                             result = mapper.readValue(restTask.getValue(), MIResult.class);
                             final MIInputData inputData = new MIInputData();

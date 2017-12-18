@@ -5,12 +5,12 @@
  */
 package com.kles.view.mi;
 
+import com.kles.view.util.ListTaskProgressView;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ProgressIndicator;
 import javafx.util.Callback;
-import org.controlsfx.control.TaskProgressView;
 
 /**
  * FXML Controller class
@@ -29,7 +28,7 @@ import org.controlsfx.control.TaskProgressView;
 public class MIExportProgressViewController {
 
     @FXML
-    private TaskProgressView<MIExportTask> taskProgressView;
+    private ListTaskProgressView<MIExportTask> taskProgressView;
 
     @FXML
     private ProgressIndicator progressError, progressSuccess, progressTotal;
@@ -77,6 +76,7 @@ public class MIExportProgressViewController {
     public void setListTask(List<MIExportTask> list) {
         listTask.setAll(list);
         percent = 1d / list.size();
+        percent=Math.round(percent*10000d)/10000d;
         taskProgressView.getTasks().setAll(listTask);
     }
 

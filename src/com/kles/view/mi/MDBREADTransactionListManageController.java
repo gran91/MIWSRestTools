@@ -5,6 +5,7 @@
  */
 package com.kles.view.mi;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -15,13 +16,19 @@ import com.kles.mi.MIRecord;
 import com.kles.mi.MIResult;
 import com.kles.mi.Transaction;
 import com.kles.model.IRestConnection;
+import com.kles.model.MIWS;
 import com.kles.model.mi.DefaultRestClientMetadataConnection;
 import com.kles.model.mi.GenericDataMIModel;
 import com.kles.task.rest.RestGetTask;
 import com.kles.utils.MIUtils;
+import static com.kles.view.mi.MDBREADListManageController.isTransactionInList;
 import com.kles.view.util.PanelIndicator;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -42,6 +49,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
@@ -50,6 +58,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.ws.rs.core.MediaType;
@@ -136,7 +145,7 @@ public class MDBREADTransactionListManageController {
         bEditTransaction.disableProperty().bind(transactionList.getSelectionModel().selectedItemProperty().isNull().or(restServiceListTransaction.runningProperty()));
         bRemoveTransaction.disableProperty().bind(transactionList.getSelectionModel().selectedItemProperty().isNull().or(restServiceListTransaction.runningProperty()));
         bExport.disableProperty().bind(transactionList.getSelectionModel().selectedItemProperty().isNull().or(restServiceListTransaction.runningProperty()));
-        bImport.disableProperty().bind(transactionList.getSelectionModel().selectedItemProperty().isNull().or(restServiceListTransaction.runningProperty()));
+        bImport.disableProperty().bind(restServiceListTransaction.runningProperty());
         bDelivery.disableProperty().bind(transactionList.getSelectionModel().selectedItemProperty().isNull().or(restServiceListTransaction.runningProperty()));
         tfiltertransaction.disableProperty().bind(Bindings.isEmpty(listTransaction));
     }
@@ -155,7 +164,7 @@ public class MDBREADTransactionListManageController {
                     break;
                 case FAILED:
                     runListTransaction();
-                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restPostClearCache.getMessage());
+                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restPostClearCache.getException().getMessage(), (Exception) restPostClearCache.getException());
                     break;
                 case CANCELLED:
                     break;
@@ -182,7 +191,7 @@ public class MDBREADTransactionListManageController {
                     listTransaction.clear();
                     break;
                 case FAILED:
-                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTask.getMessage());
+                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTask.getException().getMessage(), (Exception) restTask.getException());
                     break;
                 case CANCELLED:
                     break;
@@ -195,13 +204,9 @@ public class MDBREADTransactionListManageController {
                         try {
                             miprogram = mapper.readValue(restTask.getValue(), MIProgramMetadata.class);
                             listTransaction.setAll(MIUtils.purify(miprogram.getTransactions()));
-//                            Platform.runLater(() -> {
-//                                transactionList.setItems(FXCollections.observableList(miprogram.getTransactions()));
-//                            });
                         } catch (Exception e) {
-//                            transactionList.setItems(null);
                             listTransaction.clear();
-                            FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), e.getMessage());
+                            FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTask.getException().getMessage(), (Exception) restTask.getException());
                         }
                     }
                     break;
@@ -232,7 +237,7 @@ public class MDBREADTransactionListManageController {
                 case SCHEDULED:
                     break;
                 case FAILED:
-                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTaskDelTrans.getMessage());
+                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTaskDelTrans.getException().getMessage(), (Exception) restTaskDelTrans.getException());
                     delTransOrList();
                     break;
                 case CANCELLED:
@@ -250,21 +255,25 @@ public class MDBREADTransactionListManageController {
     @FXML
     private void removeTransaction(ActionEvent event) {
         if (transactionList.getSelectionModel().getSelectedItem() != null) {
-            cptDelTrans = 0;
-            listDelTrans = transactionList.getSelectionModel().getSelectedItems();
+            Alert alert = new Alert(Alert.AlertType.WARNING, mainApp.getResourceBundle().getString("mi.transaction.delete.confirm"), ButtonType.CANCEL, ButtonType.OK);
+            alert.setTitle(transactionName);
+            Optional<ButtonType> resultDialog = alert.showAndWait();
+            if (resultDialog.isPresent()) {
+                if (resultDialog.get() == ButtonType.OK) {
+                    cptDelTrans = 0;
+                    listDelTrans = transactionList.getSelectionModel().getSelectedItems();
 //            runDeleteTransaction(listDelTrans.get(cptDelTrans));
-            delTransOrList();
+                    delTransOrList();
+                }
+            }
         }
     }
 
     @FXML
     private void editTransaction(ActionEvent event) {
         if (transactionList.getSelectionModel().getSelectedItem() != null) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    showMDBREAD(transactionList.getSelectionModel().getSelectedItem());
-                }
+            Platform.runLater(() -> {
+                showMDBREAD(transactionList.getSelectionModel().getSelectedItem());
             });
         }
     }
@@ -309,6 +318,13 @@ public class MDBREADTransactionListManageController {
 
     @FXML
     private void delivery(ActionEvent event) {
+        ObservableList<MIWS> l = FXCollections.observableArrayList();
+        l.setAll(mainApp.getDataMap().get("MIWS").getList());
+        l.remove((MIWS) restConnection);
+        viewDelivery("Export", l, transactionList.getSelectionModel().getSelectedItems());
+    }
+
+    private void viewDelivery(String title, ObservableList<MIWS> l, List<Transaction> listTrans) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setResources(mainApp.getResourceBundle());
@@ -316,7 +332,7 @@ public class MDBREADTransactionListManageController {
             Pane miRestTest = loader.load();
 
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Export");
+            dialogStage.setTitle(title);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(stage);
             dialogStage.getIcons().add(Resource.LOGO_ICON_32);
@@ -324,8 +340,9 @@ public class MDBREADTransactionListManageController {
             MIExportController controller = loader.getController();
             controller.setMainApp(mainApp);
             controller.setStage(dialogStage);
-            controller.setTransactionList(transactionList.getSelectionModel().getSelectedItems());
-            controller.setEnvironmentList(mainApp.getDataMap().get("MIWS").getList());
+            controller.setTransactionList(listTrans);
+
+            controller.setEnvironmentList(l);
             Scene scene = new Scene(miRestTest, Color.TRANSPARENT);
             scene.getStylesheets().add(MainApp.class.getResource("application.css").toExternalForm());
             dialogStage.setScene(scene);
@@ -364,6 +381,21 @@ public class MDBREADTransactionListManageController {
 
     @FXML
     private void upload(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showOpenDialog(stage);
+        try {
+            byte[] jsonData = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Transaction> listAPI = objectMapper.readValue(jsonData, new TypeReference<List<Transaction>>() {
+            });
+            ObservableList<MIWS> l = FXCollections.observableArrayList();
+            l.setAll(mainApp.getDataMap().get("MIWS").getList());
+            viewDelivery("Import", l, listAPI);
+        } catch (IOException ex) {
+            FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("mi.import.error"), mainApp.getResourceBundle().getString("mi.import.error"), String.format(mainApp.getResourceBundle().getString("mi.import.file.error"), file.getAbsolutePath()), (Exception) ex);
+        }
     }
 
     public void runListTransaction() {
@@ -617,6 +649,18 @@ public class MDBREADTransactionListManageController {
 
     public DefaultRestClientMetadataConnection getRestClient() {
         return restClient;
+    }
+
+    public Button getbEditTransaction() {
+        return bEditTransaction;
+    }
+
+    public Button getbImport() {
+        return bImport;
+    }
+
+    public Button getbDelivery() {
+        return bDelivery;
     }
 
     public MainApp getMainApp() {

@@ -129,7 +129,7 @@ public class MDBREADEditController {
                 case SCHEDULED:
                     break;
                 case FAILED:
-                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restPostClearCache.getMessage());
+                     FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restPostClearCache.getException().getMessage(), (Exception) restPostClearCache.getException());
                     break;
                 case CANCELLED:
                     break;

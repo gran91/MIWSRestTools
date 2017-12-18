@@ -80,9 +80,11 @@ public class MDBREADToolsController {
     public void initialize() {
         tableBoolean = TextFieldValidator.emptyTextFieldBinding(ttable, "Table", messages);
         indexBoolean = TextFieldValidator.emptyTextFieldBinding(tindex, "Index table", messages);
-        InputConstraints.lettersOnly(ttable, 6);
-        InputConstraints.noBlanks(tindex);
-        InputConstraints.maxLength(tindex, 2);
+        InputConstraints.lettersOnly(ttable, 6, InputConstraints.UPPER);
+        InputConstraints.lettersNumbersOnly(tindex, 2, InputConstraints.UPPER);
+
+        ttable.disableProperty().bind(miConnectionController.getIsConnected().not());
+        tindex.disableProperty().bind(miConnectionController.getIsConnected().not());
 
 //        mdbreadListManageController.getTableName().bind(ttable.textProperty());
 //        mdbreadListManageController.getTableIndex().bind(tindex.textProperty());
@@ -90,7 +92,9 @@ public class MDBREADToolsController {
             mdbreadListManageController.getListTransaction().setAll(mdbreadTransactionListManageController.getListTransaction());
         });
 
-        bNew.disableProperty().bind((tableBoolean.and(indexBoolean)));
+        bNew.disableProperty().bind((tableBoolean.or(indexBoolean)));
+
+        mdbreadTransactionListManageController.getbImport().disableProperty().bind(miConnectionController.getIsConnected().not());
 
         miConnectionController.getIsConnected().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (newValue) {

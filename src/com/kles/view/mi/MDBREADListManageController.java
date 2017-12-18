@@ -245,7 +245,7 @@ public class MDBREADListManageController {
                 case SCHEDULED:
                     break;
                 case FAILED:
-                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTaskDelTrans.getMessage());
+                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restServiceDeleteTransaction.getException().getMessage(), (Exception) restServiceDeleteTransaction.getException());
                     runClearCache();
                     break;
                 case CANCELLED:
@@ -278,7 +278,7 @@ public class MDBREADListManageController {
                 case SCHEDULED:
                     break;
                 case FAILED:
-                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTaskIN.getMessage());
+                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restServiceGetInfoTableIN.getException().getMessage(), (Exception) restServiceGetInfoTableIN.getException());
                     break;
                 case CANCELLED:
                     break;
@@ -308,7 +308,7 @@ public class MDBREADListManageController {
                             try {
                                 MIUtils.showMIError(restTaskIN.getValue());
                             } catch (IOException ex) {
-                                FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), ex.getMessage());
+                                FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), ex.getMessage(), (Exception) ex);
                             }
                         }
                     }
@@ -366,7 +366,7 @@ public class MDBREADListManageController {
                 case SCHEDULED:
                     break;
                 case FAILED:
-                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTaskCreate.getMessage());
+                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTaskCreate.getException().getMessage(), (Exception) restTaskCreate.getException());
 //                    runClearCache();
                     break;
                 case CANCELLED:
@@ -395,7 +395,7 @@ public class MDBREADListManageController {
                 case SCHEDULED:
                     break;
                 case FAILED:
-                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTaskCreateFields.getMessage());
+                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restTaskCreateFields.getException().getMessage(), (Exception) restTaskCreateFields.getException());
 //                    runClearCache();
                     break;
                 case CANCELLED:
@@ -448,7 +448,7 @@ public class MDBREADListManageController {
                 case SCHEDULED:
                     break;
                 case FAILED:
-                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restPostClearCache.getMessage());
+                    FxUtil.showAlert(Alert.AlertType.ERROR, mainApp.getResourceBundle().getString("errorRest.title"), mainApp.getResourceBundle().getString("errorRest.header"), restPostClearCache.getMessage(), (Exception) restPostClearCache.getException());
                     break;
                 case CANCELLED:
                     break;
@@ -466,7 +466,7 @@ public class MDBREADListManageController {
         ButtonType bUpdate = new ButtonType(mainApp.getResourceBundle().getString("mi.update"), ButtonBar.ButtonData.OK_DONE);
         ButtonType bSuffix = new ButtonType(mainApp.getResourceBundle().getString("mi.suffix"), ButtonBar.ButtonData.YES);
         ButtonType bCancel = new ButtonType(mainApp.getResourceBundle().getString("main.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
-        Alert alert = new Alert(AlertType.WARNING, "This transaction already exist. Would you like to update it or create a new with suffix?", bUpdate, bSuffix, bCancel);
+        Alert alert = new Alert(AlertType.WARNING, mainApp.getResourceBundle().getString("mi.transaction.suffix.confirm"), bUpdate, bSuffix, bCancel);
         alert.setTitle(transactionName);
         Optional<ButtonType> resultDialog;
         if (!updateMode.get() && isTransactionInList(listTransaction, transactionName)) {
@@ -479,9 +479,9 @@ public class MDBREADListManageController {
                     testOK = true;
                     updateMode.set(false);
                     TextInputDialog dialog = new TextInputDialog();
-                    dialog.setTitle("Transaction MDBREADMI");
-                    dialog.setHeaderText("The transaction " + transactionName + " already exist");
-                    dialog.setContentText("Please enter a suffix:");
+                    dialog.setTitle("MDBREADMI");
+                    dialog.setHeaderText(String.format(mainApp.getResourceBundle().getString("mi.transaction.already.exist"), transactionName));
+                    dialog.setContentText(mainApp.getResourceBundle().getString("mi.transaction.suffix.new") + ":");
                     Optional<String> result = dialog.showAndWait();
                     if (result.isPresent()) {
                         suffix.set(result.get());
